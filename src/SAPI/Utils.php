@@ -37,6 +37,34 @@ class Utils
 	        return $uuid;
 	    }
 	}
+	
+	public static function getValueOfHeaderResponse($header, $propertyName)
+	{
+		$value = "";
+		foreach ($header as $k => $v) 
+		{ 
+			$array = explode(":", $v);
+			if(strtolower($array[0]) == strtolower($propertyName))
+			{
+				$value = $array[1];
+				break;
+			}
+        }
+		
+		return $value;
+	}
+	
+	public static function GetFileNameFromHeadersResponse($headersResponse, $defaultValue)
+	{
+		$filenameHolder = "filename=";
+		$result = $defaultValue;
+		// get the content-disposition value from header response
+		$cdvalue = Utils::getValueOfHeaderResponse($headersResponse, "content-disposition");
+		
+		$result = str_replace("\"", "", substr($cdvalue, strrpos($cdvalue, $filenameHolder)+strlen($filenameHolder)) );
+		
+		return $result;
+	}
 }
 
 ?>

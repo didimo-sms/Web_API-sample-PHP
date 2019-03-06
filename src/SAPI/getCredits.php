@@ -23,6 +23,8 @@ $query = http_build_query($curl_post_data);
 $headers = array(
     'Content-Type: application/x-www-form-urlencoded; charset=utf-8',
     'Accept: application/json');
+
+$dir = getcwd();
  
 $curl = curl_init($service_url.'?'.$query);
     
@@ -30,12 +32,10 @@ curl_setopt($curl, CURLOPT_POST, 1);
 curl_setopt($curl, CURLOPT_POSTFIELDS, $query );
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+curl_setopt ($curl, CURLOPT_CAINFO, $dir.'\digicert.pem');
 
-/* For PHP v5.5.18 or earlier */
-curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-
-/* For PHP v5.5.19 or later */
-//curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+curl_setopt($curl, CURLOPT_VERBOSE, true);
 
 $curl_response = curl_exec($curl);
 $info = curl_getinfo($curl);

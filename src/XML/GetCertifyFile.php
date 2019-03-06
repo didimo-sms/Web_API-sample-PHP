@@ -33,6 +33,8 @@ $http_post = false;
 $headers = array(
     'Content-Type: application/xml; charset=utf-8',
     'Accept: application/xml');
+
+$dir = getcwd();
     
 $curl = curl_init($service_url);
 
@@ -42,12 +44,10 @@ curl_setopt($curl, CURLOPT_POST, $http_post);
 curl_setopt($curl, CURLOPT_POSTFIELDS, $xmldata);
 curl_setopt($curl, CURLOPT_HEADER, $return_response_header);
 curl_setopt($curl, CURLOPT_BINARYTRANSFER, 1);
+curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+curl_setopt ($curl, CURLOPT_CAINFO, $dir.'\digicert.pem');
 
-/* For PHP v5.5.18 or earlier */
-curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-
-/* For PHP v5.5.19 or later */
-//curl_setopt($curl, CURLOPT_SSLVERSION, CURL_SSLVERSION_TLSv1_2);
+curl_setopt($curl, CURLOPT_VERBOSE, true);
 
 $curl_response = curl_exec($curl);
 $info = curl_getinfo($curl);
